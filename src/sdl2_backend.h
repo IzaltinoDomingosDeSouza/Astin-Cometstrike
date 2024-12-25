@@ -20,7 +20,7 @@ public:
     
     SDL_Quit();
   }
-  void init(const char * title,size_t width,size_t height,bool fullscreen = false)
+  bool init(const char * title,size_t width,size_t height,bool fullscreen = false)
   {
     _window = SDL_CreateWindow(title,
                               SDL_WINDOWPOS_CENTERED,
@@ -31,7 +31,7 @@ public:
     {
         fmt::print("Window could not be created! SDL_Error: {}\n", SDL_GetError());
         SDL_Quit();
-        return;
+        return false;
     }
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if(!_renderer)
@@ -39,8 +39,9 @@ public:
         fmt::print("Renderer could not be created! SDL_Error : {}\n", SDL_GetError());
         SDL_DestroyWindow(_window);
         SDL_Quit();
-        return;
+        return false;
     }
+    return true;
   }
   SDL_Renderer * get_renderer()
   {
