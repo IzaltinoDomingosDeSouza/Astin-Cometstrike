@@ -64,6 +64,15 @@ private:
     {
       _spaceship_pos.x -= _spaceship_speed * elapsed_time;
     }
+    
+    if(_spaceship_pos.x < 0)
+    {
+      _spaceship_pos.x =  0;
+    }
+    if(_spaceship_pos.x + _spaceship_size.x > 800)
+    {
+      _spaceship_pos.x = 800 - _spaceship_size.x;
+    }
   }
   void draw()
   {
