@@ -20,6 +20,8 @@ public:
     _is_running = true;
     SDL_Event e;
     
+    auto renderer = _backend.get_renderer();
+
     Uint32 elapsed_time = 0;
     while(_is_running)
     {
@@ -35,7 +37,11 @@ public:
       }
       
       update(elapsed_time / 1000.0f);
+      
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderClear(renderer);
       draw();
+      SDL_RenderPresent(renderer);
       
       Uint32 current_time = SDL_GetTicks();
       elapsed_time = current_time - start_time;
@@ -78,16 +84,11 @@ private:
   {
     auto renderer = _backend.get_renderer();
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     SDL_Rect fillRect = {(int)_spaceship_pos.x,(int)_spaceship_pos.y,
                          (int)_spaceship_size.x,(int)_spaceship_size.y};
     
     SDL_RenderFillRect(renderer, &fillRect);
-
-    SDL_RenderPresent(renderer);
   }
 };
