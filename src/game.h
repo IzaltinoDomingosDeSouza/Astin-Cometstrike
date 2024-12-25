@@ -2,6 +2,7 @@
 
 #include "sdl2_backend.h"
 #include "vec2.h"
+#include "spaceship.h"
 
 class Game
 {
@@ -52,9 +53,7 @@ private:
   bool _is_running;
   
   //SpaceShip
-  Vec2 _spaceship_pos = {(800/2)-32,600-32};
-  Vec2 _spaceship_size = {32,32};
-  float _spaceship_speed = 100.f;
+  Spaceship _spaceship;
   
   void init()
   {
@@ -64,20 +63,20 @@ private:
     const Uint8* keystates = SDL_GetKeyboardState(NULL);
     if(keystates[SDL_SCANCODE_RIGHT])
     {
-      _spaceship_pos.x += _spaceship_speed * elapsed_time;
+      _spaceship.pos.x += _spaceship.speed * elapsed_time;
     }
     if(keystates[SDL_SCANCODE_LEFT])
     {
-      _spaceship_pos.x -= _spaceship_speed * elapsed_time;
+      _spaceship.pos.x -= _spaceship.speed * elapsed_time;
     }
     
-    if(_spaceship_pos.x < 0)
+    if(_spaceship.pos.x < 0)
     {
-      _spaceship_pos.x =  0;
+      _spaceship.pos.x =  0;
     }
-    if(_spaceship_pos.x + _spaceship_size.x > 800)
+    if(_spaceship.pos.x + _spaceship.size.x > 800)
     {
-      _spaceship_pos.x = 800 - _spaceship_size.x;
+      _spaceship.pos.x = 800 - _spaceship.size.x;
     }
   }
   void draw()
@@ -86,8 +85,8 @@ private:
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-    SDL_Rect fillRect = {(int)_spaceship_pos.x,(int)_spaceship_pos.y,
-                         (int)_spaceship_size.x,(int)_spaceship_size.y};
+    SDL_Rect fillRect = {(int)_spaceship.pos.x,(int)_spaceship.pos.y,
+                         (int)_spaceship.size.x,(int)_spaceship.size.y};
     
     SDL_RenderFillRect(renderer, &fillRect);
   }
