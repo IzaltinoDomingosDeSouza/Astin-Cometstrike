@@ -46,8 +46,8 @@ private:
   bool _is_running;
   
   //SpaceShip
-  Vec2 _spaceship_pos = {0,0};
-  Vec2 _spaceship_size = {256,256};
+  Vec2 _spaceship_pos = {(800/2)-32,600-32};
+  Vec2 _spaceship_size = {32,32};
   float _spaceship_speed = 100.f;
   
   void init()
