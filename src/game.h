@@ -16,15 +16,28 @@ public:
   {
     init();
     
-    update();
-    draw();
+    _is_running = true;
+    SDL_Event e;
+    
+    while(_is_running)
+    {
+      while (SDL_PollEvent(&e) != 0)
+      {
+        if(e.type == SDL_QUIT)
+        {
+          _is_running = false;
+        }
+      }
+      update();
+      draw();
+    }
   }
 private:
   SDL2Backend _backend;
+  bool _is_running;
   
   void init()
   {
-  
   }
   void update()
   {
@@ -43,7 +56,5 @@ private:
     SDL_RenderFillRect(renderer, &fillRect);
 
     SDL_RenderPresent(renderer);
-
-    SDL_Delay(5000);
   }
 };
