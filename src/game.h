@@ -52,11 +52,14 @@ private:
   SDL2Backend _backend;
   bool _is_running;
   
-  //SpaceShip
+  //GameObject
   Spaceship _spaceship;
   
   void init()
   {
+    _spaceship.pos = {(800/2)-32,600-32};
+    _spaceship.size = {32,32};
+    _spaceship.speed = 100.f;
   }
   void update(float elapsed_time)
   {
