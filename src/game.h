@@ -3,13 +3,15 @@
 #include "sdl2_backend.h"
 #include "vec2.h"
 #include "spaceship.h"
+#include "atsin2d.h"
 
 class Game
 {
 public:
   Game()
   {
-    if(!_backend.init("Atsin Comestrike",800,600,false))
+    Global::ScreenSize = {800,600};
+    if(!_backend.init("Atsin Comestrike",Global::ScreenSize.x,Global::ScreenSize.y,false))
     {
       fmt::print("SDL_Error : {}\n", SDL_GetError());
     }
@@ -57,7 +59,7 @@ private:
   
   void init()
   {
-    _spaceship.pos = {(800/2)-32,600-32};
+    _spaceship.pos = {(Global::ScreenSize.x/2)-32,Global::ScreenSize.y-32};
     _spaceship.size = {32,32};
     _spaceship.speed = 100.f;
   }
@@ -73,14 +75,7 @@ private:
       _spaceship.pos.x -= _spaceship.speed * elapsed_time;
     }
     
-    if(_spaceship.pos.x < 0)
-    {
-      _spaceship.pos.x =  0;
-    }
-    if(_spaceship.pos.x + _spaceship.size.x > 800)
-    {
-      _spaceship.pos.x = 800 - _spaceship.size.x;
-    }
+    Global::KeepInsideOfScreen(_spaceship.pos,_spaceship.size);
   }
   void draw()
   {
