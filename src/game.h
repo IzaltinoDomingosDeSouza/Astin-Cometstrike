@@ -59,33 +59,14 @@ private:
   
   void init()
   {
-    _spaceship.pos = {(Global::ScreenSize.x/2)-32,Global::ScreenSize.y-32};
-    _spaceship.size = {32,32};
-    _spaceship.speed = 100.f;
+    _spaceship.init();
   }
   void update(float elapsed_time)
   {
-    const Uint8* keystates = SDL_GetKeyboardState(NULL);
-    if(keystates[SDL_SCANCODE_RIGHT])
-    {
-      _spaceship.pos.x += _spaceship.speed * elapsed_time;
-    }
-    if(keystates[SDL_SCANCODE_LEFT])
-    {
-      _spaceship.pos.x -= _spaceship.speed * elapsed_time;
-    }
-    
-    Global::KeepInsideOfScreen(_spaceship.pos,_spaceship.size);
+    _spaceship.update(elapsed_time);
   }
   void draw()
   {
-    auto renderer = _backend.get_renderer();
-
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-    SDL_Rect fillRect = {(int)_spaceship.pos.x,(int)_spaceship.pos.y,
-                         (int)_spaceship.size.x,(int)_spaceship.size.y};
-    
-    SDL_RenderFillRect(renderer, &fillRect);
+    _spaceship.draw(_backend.get_renderer());
   }
 };
