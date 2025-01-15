@@ -5,6 +5,8 @@
 #include "spaceship.h"
 #include "atsin2d.h"
 
+#include <vector>
+
 class Game
 {
 public:
@@ -54,19 +56,28 @@ private:
   SDL2Backend _backend;
   bool _is_running;
   
-  //GameObject
-  Spaceship _spaceship;
+  std::vector<GameObject*> _game_objects;
   
   void init()
   {
-    _spaceship.init();
+    _game_objects.push_back(new Spaceship);
+    for(auto & game_object : _game_objects)
+    {
+      game_object->init();
+    }
   }
   void update(float elapsed_time)
   {
-    _spaceship.update(elapsed_time);
+    for(auto & game_object : _game_objects)
+    {
+      game_object->update(elapsed_time);
+    }
   }
   void draw()
   {
-    _spaceship.draw(_backend.get_renderer());
+    for(auto & game_object : _game_objects)
+    {
+      game_object->draw(_backend.get_renderer());
+    }
   }
 };

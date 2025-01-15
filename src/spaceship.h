@@ -7,7 +7,6 @@
 class Spaceship : public GameObject
 {
 public:
-  Vec2 pos;
   Vec2 size;
   float speed;
   
@@ -35,7 +34,6 @@ public:
   {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     
-    //Player render
     SDL_Rect spaceship = {(int)pos.x,(int)pos.y,
                          (int)size.x,(int)size.y};
     
