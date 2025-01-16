@@ -11,4 +11,10 @@ public:
   virtual void init() = 0;
   virtual void update(float delta) = 0;
   virtual void draw(SDL_Renderer * renderer) = 0;
+  
+  template <typename Interface>
+  Interface * GetInterface()
+  {
+    return dynamic_cast<Interface*>(this);
+  }
 };

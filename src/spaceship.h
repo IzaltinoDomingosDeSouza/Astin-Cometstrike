@@ -3,10 +3,11 @@
 #include "vec2.h"
 #include "game_object.h"
 #include "atsin2d.h"
+#include "interface/create_projectile.h"
 
 #include <fmt/core.h>
 
-class Spaceship : public GameObject
+class Spaceship : public GameObject, public ICreateProjectile
 {
 public:
   Vec2 size;
@@ -35,6 +36,25 @@ public:
     }
 
     Global::KeepInsideOfScreen(pos,size);
+    
+    if(keystates[SDL_SCANCODE_SPACE])
+    {
+        _should_fire = true;
+    }
+    _next_fire_time -= delta;
+    if(_next_fire_time < 0.0f)
+    {
+      _next_fire_time = 0.0f;
+    }
+    
+    if(_should_fire && _next_fire_time == 0.0f)
+    {
+      _next_fire_time = _fire_time_delay;
+       _should_fire = true;
+    }else
+    {
+      _should_fire = false; 
+    }
   }
   void draw(SDL_Renderer * renderer) override
   {
@@ -43,6 +63,18 @@ public:
     //SDL_RenderTexture(renderer, _texture, &sprite_atlas,&location);
     SDL_RenderTextureRotated(renderer, _texture, &sprite_atlas,&location,0.0f,nullptr,SDL_FLIP_VERTICAL);
   }
+  bool should_fire() override
+  {
+    return _should_fire;
+  }
+  Projectile * create_projectile() override
+  {
+    _should_fire = false;
+    return new Projectile(Vec2{pos.x + (size.x / 2) - 5, pos.y-37});
+  }
 private:
   SDL_Texture * _texture;
+  bool _should_fire{false};
+  float _next_fire_time{0.0f};
+  float _fire_time_delay{0.25f};
 };

@@ -83,9 +83,31 @@ private:
   }
   void update(float elapsed_time)
   {
+    auto add_game_objects = std::vector<GameObject*>();
+    auto remove_game_objects = std::vector<GameObject*>();
+  
     for(auto & game_object : _game_objects)
     {
       game_object->update(elapsed_time);
+      
+      if(auto interface = game_object->GetInterface<ICreateProjectile>())
+      {
+        if(interface->should_fire())
+        {
+          auto projectile = interface->create_projectile();
+          projectile->init();
+          projectile->load_resource(&resource_loader);
+          add_game_objects.push_back(projectile);
+        }
+      }
+    }
+    for(auto & game_object : add_game_objects)
+    {
+      _game_objects .push_back(game_object);
+    }
+    for(auto & game_object : remove_game_objects)
+    {
+      _game_objects.push_back(game_object);
     }
   }
   void draw()
