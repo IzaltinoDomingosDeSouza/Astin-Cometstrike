@@ -45,6 +45,13 @@ public:
   {
     return _renderer;
   }
+  void get_window_size(float & width, float & height)
+  {
+    int w,h;
+    SDL_GetWindowSize(_window,&w,&h);
+    width = w;
+    height = h;
+  }
 private:
   SDL_Window * _window = nullptr;
   SDL_Renderer * _renderer = nullptr;

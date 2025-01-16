@@ -34,7 +34,7 @@ public:
     Uint32 elapsed_time = 0;
     while(_is_running)
     {
-      Uint32 start_time = SDL_GetTicks();  // Record the start time
+      Uint32 start_time = SDL_GetTicks();
       int last_time = start_time;
       
       while (SDL_PollEvent(&e) != 0)
@@ -42,6 +42,9 @@ public:
         if(e.type == SDL_EVENT_QUIT)
         {
           _is_running = false;
+        }else if(e.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+        {
+          _backend.get_window_size(Global::ScreenSize.x,Global::ScreenSize.y);
         }
       }
       
