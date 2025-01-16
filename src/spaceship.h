@@ -20,7 +20,7 @@ public:
   void init() override
   {
     size = {93,84};
-    pos = {(Global::ScreenSize.x/2)-size.x,Global::ScreenSize.y-size.y};
+    pos = {(Global::ScreenSize.x - size.x)/2,Global::ScreenSize.y-size.y};
     speed = 100.f;
   }
   void update(float delta) override
