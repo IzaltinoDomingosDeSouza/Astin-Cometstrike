@@ -1,9 +1,10 @@
 #pragma once
 
-#include "sdl2_backend.h"
+#include "sdl_backend.h"
 #include "vec2.h"
 #include "spaceship.h"
 #include "atsin2d.h"
+#include "resource_loader.h"
 
 #include <vector>
 
@@ -22,10 +23,13 @@ public:
   {
     init();
     
+    load_resource();
+    
     _is_running = true;
     SDL_Event e;
     
     auto renderer = _backend.get_renderer();
+    
 
     Uint32 elapsed_time = 0;
     while(_is_running)
@@ -35,7 +39,7 @@ public:
       
       while (SDL_PollEvent(&e) != 0)
       {
-        if(e.type == SDL_QUIT)
+        if(e.type == SDL_EVENT_QUIT)
         {
           _is_running = false;
         }
@@ -53,10 +57,21 @@ public:
     }
   }
 private:
-  SDL2Backend _backend;
+  SDLBackend _backend;
+  ResourceLoader resource_loader;
   bool _is_running;
   
   std::vector<GameObject*> _game_objects;
+  
+  void load_resource()
+  {
+    auto renderer = _backend.get_renderer();
+    resource_loader.init(renderer);
+    for(auto & game_object : _game_objects)
+    {
+      game_object->load_resource(&resource_loader);
+    }
+  }
   
   void init()
   {
