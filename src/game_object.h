@@ -1,11 +1,13 @@
 #pragma once
 
 #include "resource_loader.h"
+#include "tag_name.h"
 
 class GameObject
 {
 public:
   Vec2 pos;
+  TagName tag_name;
   
   virtual void load_resource(ResourceLoader * loader) = 0;
   virtual void init() = 0;
