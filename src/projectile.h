@@ -16,6 +16,7 @@ public:
     pos = position;
     size = {9,54};
     speed = 100.f;
+    is_alive = true;
   }
   void load_resource(ResourceLoader * loader) override
   {
@@ -43,7 +44,11 @@ public:
   }
   void on_collition_with(GameObject * game_object) override
   {
-    fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
+    //fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
+    if(game_object->tag_name == TagName::TinyComet)
+    {
+      is_alive = false;
+    }
   }
 private:
   SDL_Texture * _texture;

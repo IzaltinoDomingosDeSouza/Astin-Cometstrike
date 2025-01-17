@@ -8,6 +8,7 @@ class GameObject
 public:
   Vec2 pos;
   TagName tag_name;
+  bool is_alive;
   
   virtual void load_resource(ResourceLoader * loader) = 0;
   virtual void init() = 0;

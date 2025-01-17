@@ -3,6 +3,7 @@
 #include "sdl_backend.h"
 #include "vec2.h"
 #include "spaceship.h"
+#include "tiny_comet.h"
 #include "atsin2d.h"
 #include "resource_loader.h"
 #include "collision_system.h"
@@ -82,6 +83,7 @@ private:
   void init()
   {
     _game_objects.push_back(new Spaceship);
+    _game_objects.push_back(new TinyComet(Vec2{100,0}));
     for(auto & game_object : _game_objects)
     {
       game_object->init();
@@ -116,6 +118,13 @@ private:
     for(auto & game_object : add_game_objects)
     {
       _game_objects.push_back(game_object);
+    }
+    for(auto & game_object : _game_objects)
+    {
+      if(!game_object->is_alive)
+      {
+        remove_game_objects.push_back(game_object);
+      }
     }
     for(auto & game_object : remove_game_objects)
     {

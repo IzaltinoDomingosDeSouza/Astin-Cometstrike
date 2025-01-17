@@ -18,6 +18,7 @@ public:
     size = {18,18};
     speed = 100.f;
     tag_name = TagName::TinyComet;
+    is_alive = true;
     health = _max_health;
   }
   void load_resource(ResourceLoader * loader) override
@@ -51,6 +52,7 @@ public:
       if(health < 0)
       {
         health = 0;
+        is_alive = false;
       }
       fmt::print("On Collision with {} take health {} \n", to_string(game_object->tag_name),health);
     }

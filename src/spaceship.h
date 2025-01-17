@@ -24,6 +24,7 @@ public:
     pos = {(Global::ScreenSize.x - size.x)/2,Global::ScreenSize.y-size.y};
     speed = 100.f;
     tag_name = TagName::Player;
+    is_alive = true;
   }
   void update(float delta) override
   {
@@ -82,7 +83,7 @@ public:
   }
   void on_collition_with(GameObject * game_object) override
   {
-    fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
+    //fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
   }
 private:
   SDL_Texture * _texture;
