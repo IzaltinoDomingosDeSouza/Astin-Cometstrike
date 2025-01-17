@@ -5,6 +5,7 @@ enum class TagName
   Undefined,
   Player,
   PlayerProjectile,
+  TinyComet,
 };
 
 std::string to_string(TagName tag_name)
@@ -16,6 +17,9 @@ std::string to_string(TagName tag_name)
     break;
     case TagName::PlayerProjectile:
       return "PlayerProjectile";
+    break;
+    case TagName::TinyComet:
+      return "TinyComet";
     break;
   }
   return "Undefined";
