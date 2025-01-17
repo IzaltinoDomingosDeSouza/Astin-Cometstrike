@@ -1,10 +1,13 @@
 #pragma once
 
+#include "../game_object.h"
+
 class IBoxCollision
 {
 public:
     SDL_FRect shape;
     virtual void update_shape() = 0;
+    virtual void on_collition_with(GameObject * game_object) = 0;
     bool collide_with(const SDL_FRect & other_shape) const
     {
       const bool horizontal_overlap = shape.x < other_shape.x + other_shape.w && shape.x + shape.w > other_shape.x;
