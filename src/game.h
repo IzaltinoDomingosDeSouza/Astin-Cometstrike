@@ -7,6 +7,7 @@
 #include "resource_loader.h"
 
 #include <vector>
+#include <algorithm>
 
 class Game
 {
@@ -106,11 +107,15 @@ private:
     }
     for(auto & game_object : add_game_objects)
     {
-      _game_objects .push_back(game_object);
+      _game_objects.push_back(game_object);
     }
     for(auto & game_object : remove_game_objects)
     {
-      _game_objects.push_back(game_object);
+      auto it = std::find(_game_objects.begin(), _game_objects.end(), game_object);
+      if(it != _game_objects.end())
+      {
+        _game_objects.erase(it);
+      }
     }
   }
   void draw()
