@@ -5,6 +5,7 @@
 #include "spaceship.h"
 #include "atsin2d.h"
 #include "resource_loader.h"
+#include "collision_system.h"
 
 #include <vector>
 #include <algorithm>
@@ -63,6 +64,7 @@ public:
 private:
   SDLBackend _backend;
   ResourceLoader resource_loader;
+  CollisionSystem _collision_system;
   bool _is_running;
   
   std::vector<GameObject*> _game_objects;
@@ -84,6 +86,8 @@ private:
     {
       game_object->init();
     }
+    
+    _collision_system.init();
   }
   void update(float elapsed_time)
   {
@@ -100,11 +104,15 @@ private:
         {
           auto projectile = interface->create_projectile();
           projectile->init();
+          projectile->tag_name = TagName::PlayerProjectile;
           projectile->load_resource(&resource_loader);
           add_game_objects.push_back(projectile);
         }
       }
     }
+    
+    _collision_system.update(_game_objects);
+    
     for(auto & game_object : add_game_objects)
     {
       _game_objects.push_back(game_object);

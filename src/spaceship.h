@@ -4,10 +4,11 @@
 #include "game_object.h"
 #include "atsin2d.h"
 #include "interface/create_projectile.h"
+#include "interface/box_collision.h"
 
 #include <fmt/core.h>
 
-class Spaceship : public GameObject, public ICreateProjectile
+class Spaceship : public GameObject, public ICreateProjectile, public IBoxCollision
 {
 public:
   Vec2 size;
@@ -22,6 +23,7 @@ public:
     size = {93,84};
     pos = {(Global::ScreenSize.x - size.x)/2,Global::ScreenSize.y-size.y};
     speed = 100.f;
+    tag_name = TagName::Player;
   }
   void update(float delta) override
   {
@@ -55,6 +57,8 @@ public:
     {
       _should_fire = false; 
     }
+    
+    update_shape();
   }
   void draw(SDL_Renderer * renderer) override
   {
@@ -71,6 +75,14 @@ public:
   {
     _should_fire = false;
     return new Projectile(Vec2{pos.x + (size.x / 2) - 5, pos.y-37});
+  }
+  void update_shape() override
+  {
+    shape = {pos.x,pos.y,size.x,size.y};
+  }
+  void on_collition_with(GameObject * game_object) override
+  {
+    fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
   }
 private:
   SDL_Texture * _texture;
