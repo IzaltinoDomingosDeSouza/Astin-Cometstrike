@@ -22,7 +22,7 @@ public:
   {
     size = {93,84};
     pos = {(Global::ScreenSize.x - size.x)/2,Global::ScreenSize.y-size.y};
-    speed = 100.f;
+    speed = 150.f;
     tag_name = TagName::Player;
     is_alive = true;
   }
