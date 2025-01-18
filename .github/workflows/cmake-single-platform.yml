@@ -22,6 +22,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install SDL dependencies (X11/Wayland)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libx11-dev \
+          libxrandr-dev \
+          libxi-dev \
+          libxss-dev \
+          libxtst-dev \
+          libwayland-dev \
+          libx11-xcb-dev  # Additional X11/Wayland libraries
+
     # Initialize and update git submodules, if you're using them for dependencies
     - name: Initialize and update submodules
       run: git submodule update --init --recursive
