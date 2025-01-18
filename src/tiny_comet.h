@@ -54,13 +54,13 @@ public:
     //fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
     if(game_object->tag_name == TagName::PlayerProjectile)
     {
-      health -= 10;
-      if(health < 0)
+      health -= 100;
+      if(health <= 0)
       {
         health = 0;
         is_alive = false;
       }
-      fmt::print("On Collision with {} take health {} \n", to_string(game_object->tag_name),health);
+      fmt::print("On Collision with {} health {} \n", to_string(game_object->tag_name),health);
     }
   }
 private:
