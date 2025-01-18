@@ -4,8 +4,9 @@
 #include "game_object.h"
 #include "atsin2d.h"
 #include "interface/box_collision.h"
+#include "interface/health.h"
 
-class TinyComet : public GameObject, public IBoxCollision
+class TinyComet : public GameObject, public IBoxCollision, public IHealth
 {
 public:
   Vec2 size;
@@ -19,7 +20,8 @@ public:
     speed = 120.f;
     tag_name = TagName::TinyComet;
     is_alive = true;
-    health = _max_health;
+    max_health = 100;
+    current_health = 100;
   }
   void load_resource(ResourceLoader * loader) override
   {
@@ -35,6 +37,10 @@ public:
     update_shape();
 
     if(pos.y > Global::ScreenSize.y)
+    {
+      is_alive = false;
+    }
+    if(current_health == 0)
     {
       is_alive = false;
     }
@@ -54,20 +60,19 @@ public:
     //fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
     if(game_object->tag_name == TagName::PlayerProjectile)
     {
-      health -= 100;
-      if(health <= 0)
-      {
-        health = 0;
-        is_alive = false;
-      }
+      take_damage(100);
       fmt::print("On Collision with {} health {} \n", to_string(game_object->tag_name),health);
     }
     else if(game_object->tag_name == TagName::Player)
     {
-      is_alive = false;
+      take_damage(100);
+      auto interface = game_object->GetInterface<IHealth>();
+      if(interface)
+      {
+        interface->take_damage(10);
+      }
     }
   }
 private:
   SDL_Texture * _texture;
-  int _max_health = 100;
 };

@@ -5,10 +5,11 @@
 #include "atsin2d.h"
 #include "interface/create_projectile.h"
 #include "interface/box_collision.h"
+#include "interface/health.h"
 
 #include <fmt/core.h>
 
-class Spaceship : public GameObject, public ICreateProjectile, public IBoxCollision
+class Spaceship : public GameObject, public ICreateProjectile, public IBoxCollision, public IHealth
 {
 public:
   Vec2 size;
@@ -25,6 +26,8 @@ public:
     speed = 150.f;
     tag_name = TagName::Player;
     is_alive = true;
+    max_health = 100;
+    current_health = 100;
   }
   void update(float delta) override
   {
