@@ -7,6 +7,7 @@
 #include "atsin2d.h"
 #include "resource_loader.h"
 #include "collision_system.h"
+#include "background.h"
 
 #include <vector>
 #include <algorithm>
@@ -66,6 +67,7 @@ private:
   SDLBackend _backend;
   ResourceLoader resource_loader;
   CollisionSystem _collision_system;
+  Background _background;
   bool _is_running;
   
   std::vector<GameObject*> _game_objects;
@@ -74,6 +76,8 @@ private:
   {
     auto renderer = _backend.get_renderer();
     resource_loader.init(renderer);
+
+    _background.load_resource(&resource_loader);
     for(auto & game_object : _game_objects)
     {
       game_object->load_resource(&resource_loader);
@@ -82,6 +86,8 @@ private:
   
   void init()
   {
+    _background.init();
+
     _game_objects.push_back(new Spaceship);
     _game_objects.push_back(new TinyComet(Vec2{100,0}));
     for(auto & game_object : _game_objects)
@@ -93,13 +99,15 @@ private:
   }
   void update(float elapsed_time)
   {
+    _background.update(elapsed_time);
+
     auto add_game_objects = std::vector<GameObject*>();
     auto remove_game_objects = std::vector<GameObject*>();
   
     for(auto & game_object : _game_objects)
     {
       game_object->update(elapsed_time);
-      
+
       if(auto interface = game_object->GetInterface<ICreateProjectile>())
       {
         if(interface->should_fire())
@@ -137,6 +145,7 @@ private:
   }
   void draw()
   {
+    _background.draw(_backend.get_renderer());
     for(auto & game_object : _game_objects)
     {
       game_object->draw(_backend.get_renderer());
