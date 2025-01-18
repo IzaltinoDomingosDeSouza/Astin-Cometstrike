@@ -62,6 +62,10 @@ public:
       }
       fmt::print("On Collision with {} health {} \n", to_string(game_object->tag_name),health);
     }
+    else if(game_object->tag_name == TagName::Player)
+    {
+      is_alive = false;
+    }
   }
 private:
   SDL_Texture * _texture;
