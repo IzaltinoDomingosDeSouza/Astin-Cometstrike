@@ -16,7 +16,7 @@ public:
   {
     pos = position;
     size = {18,18};
-    speed = 100.f;
+    speed = 120.f;
     tag_name = TagName::TinyComet;
     is_alive = true;
     health = _max_health;
@@ -31,7 +31,13 @@ public:
   }
   void update(float delta) override
   {
+    pos.y += speed * delta;
     update_shape();
+
+    if(pos.y > Global::ScreenSize.y)
+    {
+      is_alive = false;
+    }
   }
   void draw(SDL_Renderer * renderer) override
   {
