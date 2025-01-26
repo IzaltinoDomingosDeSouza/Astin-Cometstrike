@@ -7,6 +7,7 @@
 #include "atsin2d.h"
 #include "resource_loader.h"
 #include "collision_system.h"
+#include "comet_wave_system.h"
 #include "background.h"
 
 #include <vector>
@@ -67,6 +68,7 @@ private:
   SDLBackend _backend;
   ResourceLoader resource_loader;
   CollisionSystem _collision_system;
+  CometWaveSystem _comet_wave_system;
   Background _background;
   bool _is_running;
   
@@ -87,9 +89,9 @@ private:
   void init()
   {
     _background.init();
+    _comet_wave_system.init();
 
     _game_objects.push_back(new Spaceship);
-    _game_objects.push_back(new TinyComet(Vec2{100,0}));
     for(auto & game_object : _game_objects)
     {
       game_object->init();
@@ -115,18 +117,20 @@ private:
           auto projectile = interface->create_projectile();
           projectile->init();
           projectile->tag_name = TagName::PlayerProjectile;
-          projectile->load_resource(&resource_loader);
           add_game_objects.push_back(projectile);
         }
       }
     }
     
     _collision_system.update(_game_objects);
+    _comet_wave_system.update(elapsed_time,&add_game_objects);
     
     for(auto & game_object : add_game_objects)
     {
+      game_object->load_resource(&resource_loader);
       _game_objects.push_back(game_object);
     }
+
     for(auto & game_object : _game_objects)
     {
       if(!game_object->is_alive)
