@@ -23,10 +23,6 @@ public:
     max_health = 100;
     current_health = 100;
   }
-  void load_resource(ResourceLoader * loader) override
-  {
-    _texture = loader->load_from_disk<SDL_Texture>("../bin/data/Game.png");
-  }
   void init() override
   {
     
@@ -45,11 +41,11 @@ public:
       is_alive = false;
     }
   }
-  void draw(SDL_Renderer * renderer) override
+  void draw(AtlasRenderer * atlas_renderer) override
   {
     SDL_FRect sprite_atlas = {346,814,18,18};
     SDL_FRect location = {pos.x, pos.y, size.x, size.y};
-    SDL_RenderTexture(renderer, _texture, &sprite_atlas,&location);
+    atlas_renderer->draw(AtlasType::Game, &sprite_atlas,&location);
   }
   void update_shape() override
   {

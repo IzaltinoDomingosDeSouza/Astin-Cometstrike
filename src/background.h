@@ -7,11 +7,6 @@
 class Background
 {
 public:
-  
-  void load_resource(ResourceLoader * loader)
-  {
-    _texture = loader->load_from_disk<SDL_Texture>("../bin/data/Background/DarkPurple.png");
-  }
   void init()
   {
     _pos = Vec2{0,0};
@@ -26,19 +21,19 @@ public:
       _pos.y = -_size.y;
     }
   }
-  void draw(SDL_Renderer * renderer)
+  void draw(AtlasRenderer * atlas_renderer)
   {
     for(float y = _pos.y; y < Global::ScreenSize.y; y += _size.y)
     {
       for(float x = _pos.x; x < Global::ScreenSize.x; x += _size.x)
       {
         SDL_FRect location = {x,y, _size.x, _size.y};
-        SDL_RenderTexture(renderer, _texture, nullptr,&location);
+        SDL_FRect atlas_sprite = {0,0,_size.x, _size.y};
+        atlas_renderer->draw(AtlasType::Background,&atlas_sprite,&location);
       }
     }
   }
 private:
-  SDL_Texture * _texture;
   Vec2 _pos;
   Vec2 _size;
   float _speed;

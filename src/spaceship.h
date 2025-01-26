@@ -14,11 +14,6 @@ class Spaceship : public GameObject, public ICreateProjectile, public IBoxCollis
 public:
   Vec2 size;
   float speed;
-  
-  void load_resource(ResourceLoader * loader) override
-  {
-    _texture = loader->load_from_disk<SDL_Texture>("../bin/data/Game.png");
-  }
   void init() override
   {
     size = {93,84};
@@ -64,12 +59,11 @@ public:
     
     update_shape();
   }
-  void draw(SDL_Renderer * renderer) override
+  void draw(AtlasRenderer * atlas_renderer) override
   {
     SDL_FRect sprite_atlas = {120,604,104,84};
     SDL_FRect location = {pos.x, pos.y, size.x, size.y};
-    //SDL_RenderTexture(renderer, _texture, &sprite_atlas,&location);
-    SDL_RenderTextureRotated(renderer, _texture, &sprite_atlas,&location,0.0f,nullptr,SDL_FLIP_VERTICAL);
+    atlas_renderer->draw(AtlasType::Game, &sprite_atlas, &location,TextureFlip::Vertical);
   }
   bool should_fire() override
   {
@@ -89,7 +83,6 @@ public:
     //fmt::print("On Collision with {}\n", to_string(game_object->tag_name));
   }
 private:
-  SDL_Texture * _texture;
   bool _should_fire{false};
   float _next_fire_time{0.0f};
   float _fire_time_delay{0.25f};

@@ -5,7 +5,7 @@
 #include "spaceship.h"
 #include "tiny_comet.h"
 #include "atsin2d.h"
-#include "resource_loader.h"
+#include "atlas_renderer.h"
 #include "collision_system.h"
 #include "comet_wave_system.h"
 #include "background.h"
@@ -27,8 +27,6 @@ public:
   void run()
   {
     init();
-    
-    load_resource();
     
     _is_running = true;
     SDL_Event e;
@@ -66,7 +64,7 @@ public:
   }
 private:
   SDLBackend _backend;
-  ResourceLoader resource_loader;
+  AtlasRenderer _atlas_renderer;
   CollisionSystem _collision_system;
   CometWaveSystem _comet_wave_system;
   Background _background;
@@ -74,20 +72,10 @@ private:
   
   std::vector<GameObject*> _game_objects;
   
-  void load_resource()
-  {
-    auto renderer = _backend.get_renderer();
-    resource_loader.init(renderer);
-
-    _background.load_resource(&resource_loader);
-    for(auto & game_object : _game_objects)
-    {
-      game_object->load_resource(&resource_loader);
-    }
-  }
-  
   void init()
   {
+    auto renderer = _backend.get_renderer();
+    _atlas_renderer.init(renderer);
     _background.init();
     _comet_wave_system.init();
 
@@ -127,7 +115,6 @@ private:
     
     for(auto & game_object : add_game_objects)
     {
-      game_object->load_resource(&resource_loader);
       _game_objects.push_back(game_object);
     }
 
@@ -149,10 +136,10 @@ private:
   }
   void draw()
   {
-    _background.draw(_backend.get_renderer());
+    _background.draw(&_atlas_renderer);
     for(auto & game_object : _game_objects)
     {
-      game_object->draw(_backend.get_renderer());
+      game_object->draw(&_atlas_renderer);
     }
   }
 };
