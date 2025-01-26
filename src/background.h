@@ -23,12 +23,12 @@ public:
   }
   void draw(AtlasRenderer * atlas_renderer)
   {
-    for(float y = _pos.y; y < Global::ScreenSize.y; y += _size.y)
+    for(float y = _pos.y; y < Global::ScreenSize.y; y += _size.y-1)
     {
-      for(float x = _pos.x; x < Global::ScreenSize.x; x += _size.x)
+      for(float x = _pos.x; x < Global::ScreenSize.x; x += _size.x-1)
       {
+        SDL_FRect atlas_sprite = {256,0,_size.x, _size.y};
         SDL_FRect location = {x,y, _size.x, _size.y};
-        SDL_FRect atlas_sprite = {0,0,_size.x, _size.y};
         atlas_renderer->draw(AtlasType::Background,&atlas_sprite,&location);
       }
     }

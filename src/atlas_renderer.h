@@ -22,7 +22,7 @@ public:
   {
     _renderer = renderer;
   
-    _texture[static_cast<int>(AtlasType::Background)] = IMG_LoadTexture(_renderer, "../bin/data/Background/DarkPurple.png");
+    _texture[static_cast<int>(AtlasType::Background)] = IMG_LoadTexture(_renderer, "../bin/data/Background.png");
     _texture[static_cast<int>(AtlasType::Game)] = IMG_LoadTexture(_renderer, "../bin/data/Game.png");
   }
   SDL_Texture * get_texture(AtlasType type)
